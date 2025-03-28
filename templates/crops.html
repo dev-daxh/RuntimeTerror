@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Select Crop</title>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Merriweather', serif;
+      background-color: #e9f7d8;
+      color: #4c8a2d;
+    }
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #3e6c22;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeIn 1s ease-in-out;
+      opacity: 0;
+      animation-fill-mode: forwards;
+    }
+    .card img {
+      max-width: 70px;
+      margin-bottom: 15px;
+    }
+    .card p {
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .card:nth-child(1) { animation-delay: 0.2s; }
+    .card:nth-child(2) { animation-delay: 0.4s; }
+    .card:nth-child(3) { animation-delay: 0.6s; }
+    .card:nth-child(4) { animation-delay: 0.8s; }
+  </style>
+  <script>
+    function setCrop(crop) {
+      document.cookie = `selected_crop=${crop}; path=/;`;
+      window.location.href = "/upload";
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Select a Crop</h1>
+    <div class="grid">
+      <div class="card" onclick="setCrop('Potato')">
+        <img src="static/potato.jpeg" alt="Potato">
+        <p>Potato</p>
+      </div>
+      <div class="card" onclick="setCrop('Soyabean')">
+        <img src="static/soyabean.jpeg" alt="Soyabean">
+        <p>Soyabean</p>
+      </div>
+      <div class="card" onclick="setCrop('Cotton')">
+        <img src="static/cotton.jpg" alt="Cotton">
+        <p>Cotton</p>
+      </div>
+      <div class="card" onclick="setCrop('Orange')">
+        <img src="static/orange.jpeg" alt="Orange">
+        <p>Orange</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

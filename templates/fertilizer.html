@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fertilizer Recommendations</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+  <style>
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    body {
+      font-family: "Lora", serif;
+      background: url("https://cdn.pixabay.com/photo/2017/08/06/02/05/agriculture-2596914_1280.jpg") 
+        no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      color: #2c3e50;
+    }
+
+    .fertilizer-card {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 500px;
+      animation: fadeIn 1s ease-out;
+    }
+
+    h1 {
+      text-align: center;
+      color: #27ae60;
+    }
+
+    .btn-primary {
+      background-color: #27ae60;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background-color: #219150;
+    }
+
+    .recommendations ul {
+      padding-left: 20px;
+    }
+
+    #google_translate_element {
+      margin-bottom: 15px;
+      text-align: right;
+    }
+
+    .slide-up {
+      animation: slideUp 0.8s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <div class="fertilizer-card">
+    <h1>🌾 Fertilizer Tips</h1>
+    <div id="google_translate_element"></div>
+    <form id="fertilizer-form">
+      <div class="form-group">
+        <label for="crop-select">Select Crop:</label>
+        <select id="crop-select" class="form-control" required>
+          <option value="">--Select Crop--</option>
+          <option value="potato">Potato</option>
+          <option value="cotton">Cotton</option>
+          <option value="soyabean">Soyabean</option>
+          <option value="orange">Orange</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="disease-select">Select Disease:</label>
+        <select id="disease-select" class="form-control" required>
+          <option value="">--Select Disease--</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Get Fertilizer Tips</button>
+    </form>
+    <div class="recommendations" id="fertilizer-container" style="display: none;">
+      <h3>Recommended Fertilizers:</h3>
+      <ul id="fertilizer-list"></ul>
+    </div>
+  </div>
+
+  <script>
+    const cropDiseases = {
+      potato: ["Potato___Early_blight", "Potato___Late_blight", "Potato___healthy"],
+      cotton: ["diseased cotton leaf", "diseased cotton plant", "fresh cotton leaf", "fresh cotton plant"],
+      soyabean: ["Caterpillar", "Diabrotica speciosa", "Healthy"],
+      orange: ["blackspot", "canker", "fresh", "grenning"]
+    };
+
+    const fertilizers = {
+      Potato___Early_blight: "Use urea and organic compost. Apply ammonium sulfate for better growth.",
+      Potato___Late_blight: "Apply phosphorus-rich fertilizers like single super phosphate.",
+      Potato___healthy: "Apply balanced NPK fertilizer for better growth.",
+      "diseased cotton leaf": "Add potash fertilizers to strengthen plant defenses.",
+      "diseased cotton plant": "Use phosphorus-rich fertilizers to boost root health.",
+      "fresh cotton leaf": "Regularly use nitrogen-rich fertilizers.",
+      "fresh cotton plant": "Incorporate vermicompost for soil health.",
+      Caterpillar: "Apply organic manure enriched with potassium.",
+      "Diabrotica speciosa": "Use crop rotation and organic phosphorus sources.",
+      Healthy: "Use balanced fertilizers like NPK mixtures.",
+      blackspot: "Apply composted manure and bone meal.",
+      canker: "Use fertilizers enriched with copper or boron.",
+      fresh: "Maintain soil nutrients using organic compost.",
+      grenning: "Apply liquid seaweed fertilizers for micronutrient balance."
+    };
+
+    document.getElementById("crop-select").addEventListener("change", function () {
+      const crop = this.value;
+      const diseaseSelect = document.getElementById("disease-select");
+      diseaseSelect.innerHTML = '<option value="">--Select Disease--</option>';
+
+      if (cropDiseases[crop]) {
+        cropDiseases[crop].forEach(disease => {
+          const option = document.createElement("option");
+          option.value = disease;
+          option.textContent = disease;
+          diseaseSelect.appendChild(option);
+        });
+      }
+    });
+
+    document.getElementById("fertilizer-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+      const disease = document.getElementById("disease-select").value;
+      const fertilizerList = document.getElementById("fertilizer-list");
+      const fertilizerContainer = document.getElementById("fertilizer-container");
+
+      fertilizerList.innerHTML = "";
+      if (fertilizers[disease]) {
+        const li = document.createElement("li");
+        li.textContent = fertilizers[disease];
+        fertilizerList.appendChild(li);
+      } else {
+        const li = document.createElement("li");
+        li.textContent = "No fertilizer recommendation available.";
+        fertilizerList.appendChild(li);
+      }
+      fertilizerContainer.classList.add("slide-up");
+      fertilizerContainer.style.display = "block";
+    });
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: "en",
+        includedLanguages: "en,mr,hi,bn,kn,ta,te,od,gu,ur,pa,ml"
+      }, "google_translate_element");
+    }
+  </script>
+  <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
+</html>
